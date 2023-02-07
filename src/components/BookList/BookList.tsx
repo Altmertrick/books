@@ -1,7 +1,21 @@
-type PropsT = {};
+import { BookT } from '../../types/types';
+import BookShow from '../BookShow/BookShow';
 
-const BookListt: React.FC<any> = (props) => {
-  return <div>BookListt</div>;
+type PropsT = {
+  books: Array<BookT>;
 };
 
-export default BookListt;
+const BookList: React.FC<any> = (props) => {
+  const renderedBooks = props.books.map((book: any) => (
+    <BookShow
+      book={book}
+      key={book.id}
+      onDelete={props.onDelete}
+      onEdit={props.onEdit}
+    />
+  ));
+
+  return <div className="book-list">{renderedBooks}</div>;
+};
+
+export default BookList;
