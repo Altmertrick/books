@@ -39,7 +39,7 @@ const App: React.FC<any> = (props) => {
     setBooks(newBooks);
   };
   const deleteBookById = async (id: number) => {
-    const res = await axios.delete(`http://localhost:3001/books/${id}`);
+    await axios.delete(`http://localhost:3001/books/${id}`);
 
     const newBooks = books.filter((book) => book.id !== id);
     setBooks(newBooks);

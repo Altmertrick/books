@@ -1,11 +1,15 @@
 import { BookT } from '../../types/types';
 import BookShow from '../BookShow/BookShow';
+import { useContext } from 'react';
+import BooksContext from '../../context/books';
 
 type PropsT = {
   books: Array<BookT>;
 };
 
 const BookList: React.FC<any> = (props) => {
+  const { count, incrementCount } = useContext(BooksContext);
+
   const renderedBooks = props.books.map((book: any) => (
     <BookShow
       book={book}
@@ -15,7 +19,13 @@ const BookList: React.FC<any> = (props) => {
     />
   ));
 
-  return <div className="book-list">{renderedBooks}</div>;
+  return (
+    <div className="book-list">
+      {count}
+      <button onClick={incrementCount}>Increment</button>
+      {renderedBooks}
+    </div>
+  );
 };
 
 export default BookList;
