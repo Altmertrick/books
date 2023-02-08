@@ -26,6 +26,7 @@ const BookShow: React.FC<PropsT> = (props) => {
 
   return (
     <div className="book-show">
+      <img src={`https://picsum.photos/seed/${props.book.id}/300/200`} />
       <div>
         {editMode ? (
           <BookEdit onEdit={onTitleSave} book={props.book} />
