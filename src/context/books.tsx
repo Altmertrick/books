@@ -1,19 +1,61 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { BookT } from '../types/types';
 
-const BooksContext = createContext({ count: 0, incrementCount: () => {} });
+const initialContext = {
+  books: [] as Array<BookT>,
+  createBook: (title: string) => {},
+  editBookById: (id: number, title: string) => {},
+  deleteBookById: (id: number) => {},
+};
+type BooksContextT = typeof initialContext;
+
+const BooksContext = createContext<BooksContextT>(initialContext);
 
 export const Provider: React.FC<any> = (props) => {
-  const [count, setCount] = useState(0);
+  const [books, setBooks] = useState<Array<BookT>>([]);
 
-  const valueToShare = {
-    count,
-    incrementCount: () => {
-      setCount(count + 1);
+  const fetchBooks = async () => {
+    const res = await axios.get('http://localhost:3001/books');
+    setBooks([...res.data]);
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const stateToShare = {
+    books,
+    createBook: async (title: string) => {
+      const res = await axios.post('http://localhost:3001/books', {
+        title,
+      });
+      const newBooks = [...books, res.data];
+      setBooks(newBooks);
+    },
+    editBookById: async (id: number, title: string) => {
+      const res = await axios.put(`http://localhost:3001/books/${id}`, {
+        title,
+      });
+
+      const newBooks = books.map((book) => {
+        if (book.id === id) {
+          return { ...book, ...res.data };
+        }
+        return book;
+      });
+      setBooks(newBooks);
+    },
+    deleteBookById: async (id: number) => {
+      await axios.delete(`http://localhost:3001/books/${id}`);
+
+      const newBooks = books.filter((book) => book.id !== id);
+      setBooks(newBooks);
     },
   };
 
   return (
-    <BooksContext.Provider value={valueToShare}>
+    <BooksContext.Provider value={stateToShare}>
       {props.children}
     </BooksContext.Provider>
   );

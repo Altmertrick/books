@@ -3,29 +3,21 @@ import BookShow from '../BookShow/BookShow';
 import { useContext } from 'react';
 import BooksContext from '../../context/books';
 
-type PropsT = {
-  books: Array<BookT>;
-};
+type PropsT = {};
 
 const BookList: React.FC<any> = (props) => {
-  const { count, incrementCount } = useContext(BooksContext);
+  const { books, editBookById, deleteBookById } = useContext(BooksContext);
 
-  const renderedBooks = props.books.map((book: any) => (
+  const renderedBooks = books.map((book: any) => (
     <BookShow
       book={book}
       key={book.id}
-      onDelete={props.onDelete}
-      onEdit={props.onEdit}
+      onDelete={deleteBookById}
+      onEdit={editBookById}
     />
   ));
 
-  return (
-    <div className="book-list">
-      {count}
-      <button onClick={incrementCount}>Increment</button>
-      {renderedBooks}
-    </div>
-  );
+  return <div className="book-list">{renderedBooks}</div>;
 };
 
 export default BookList;
