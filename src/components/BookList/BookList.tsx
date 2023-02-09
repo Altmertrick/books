@@ -1,12 +1,12 @@
 import { BookT } from '../../types/types';
 import BookShow from '../BookShow/BookShow';
-import { useContext } from 'react';
-import BooksContext from '../../context/books';
+
+import useBooksContext from '../../hooks/use-books-context';
 
 type PropsT = {};
 
 const BookList: React.FC<any> = (props) => {
-  const { books, editBookById, deleteBookById } = useContext(BooksContext);
+  const { books, editBookById, deleteBookById } = useBooksContext();
 
   const renderedBooks = books.map((book: any) => (
     <BookShow
