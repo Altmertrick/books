@@ -11,7 +11,7 @@ const App: React.FC<any> = (props) => {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [fetchBooks]);
 
   return (
     <div className="app">

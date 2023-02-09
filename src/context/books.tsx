@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useState } from 'react';
 import axios from 'axios';
 import { BookT } from '../types/types';
 
@@ -16,10 +16,10 @@ const BooksContext = createContext<BooksContextT>(initialContext);
 export const Provider: React.FC<any> = (props) => {
   const [books, setBooks] = useState<Array<BookT>>([]);
 
-  const fetchBooks = async () => {
+  const fetchBooks = useCallback(async () => {
     const res = await axios.get('http://localhost:3001/books');
     setBooks([...res.data]);
-  };
+  }, []);
   const createBook = async (title: string) => {
     const res = await axios.post('http://localhost:3001/books', {
       title,
